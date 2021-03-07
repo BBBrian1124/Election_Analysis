@@ -62,29 +62,46 @@ with open(file_to_load) as election_data:
         #3. As it loops, it adds 1 each time it finds the key (candidate name)
         candidate_votes[candidate_name] += 1
 
-# 4. Iterate through the candidate_votes list
-for candidate_name in candidate_votes:
-    # retreive the # of votes by getting the values for the key [candidate name] in the candidate_votes dictionary
-    # using the function dictionary_name[key] we are assinging the values for the key candidate_name to the variable votes 
-    votes = candidate_votes[candidate_name]
-    # Calculate the percentage of votes.
-    vote_percentage = float(votes) / float(total_votes) * 100
-    # Print each candidate name, their vote % and their # of votes
-    print(f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+# Save the results to our text file by opening the file and indicating that we will be writing into it
+with open(file_to_save, "w") as txt_file:
+# Print the final vote count to the terminal by assigning values to the variable election_results 
+    election_results = (
+        f"\nElection Results\n"
+        f"-------------------------\n"
+        f"Total Votes: {total_votes:,}\n"
+        f"-------------------------\n")
+    print(election_results, end="")
+    # write the election_results to the txt file
+    txt_file.write(election_results)
 
-# 5. Determine winning vote count and candidate
-    # Place a if statement within the loop to check these conditions 
-    if (votes > winning_count) and (vote_percentage > winning_percentage):
-    # as it loops through the values, if the values is > than the prior value then it is declared/assigned to be the winner 
-     winning_count = votes
-     winning_percentage = vote_percentage
-     winning_candidate = candidate_name
+    # 4. Iterate through the candidate_votes list
+    for candidate_name in candidate_votes:
+        # retreive the # of votes by getting the values for the key [candidate name] in the candidate_votes dictionary
+        # using the function dictionary_name[key] we are assinging the values for the key candidate_name to the variable votes 
+        votes = candidate_votes[candidate_name]
+        # Calculate the percentage of votes.
+        vote_percentage = float(votes) / float(total_votes) * 100
+        # assign each candidate name, their vote % and their # of votes to a variable
+        candidate_results = (f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+        # Print each candidate, their voter count, and percentage to the terminal.
+        print(candidate_results)
+        #  write the candidate results to our text file.
+        txt_file.write(candidate_results)
 
-## PRINT ##
-winning_candidate_summary = (
-    f"-------------------------\n"
-    f"Winner: {winning_candidate}\n"
-    f"Winning Vote Count: {winning_count:,}\n"
-    f"Winning Percentage: {winning_percentage:.1f}%\n"
-    f"-------------------------\n")
-print(winning_candidate_summary)
+    # 5. Determine winning vote count and candidate
+        # Place a if statement within the loop to check these conditions 
+        if (votes > winning_count) and (vote_percentage > winning_percentage):
+        # as it loops through the values, if the values is > than the prior value then it is declared/assigned to be the winner 
+            winning_count = votes
+            winning_percentage = vote_percentage
+            winning_candidate = candidate_name
+
+    ## PRINT ##
+    winning_candidate_summary = (
+        f"-------------------------\n"
+        f"Winner: {winning_candidate}\n"
+        f"Winning Vote Count: {winning_count:,}\n"
+        f"Winning Percentage: {winning_percentage:.1f}%\n"
+        f"-------------------------\n")
+    print(winning_candidate_summary)
+    txt_file.write(winning_candidate_summary)
